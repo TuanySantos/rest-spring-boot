@@ -1,4 +1,4 @@
-package br.com.springboot.restspringboot;
+package br.com.springboot.restspringboot.controllers;
 
 import br.com.springboot.restspringboot.converters.NumberConverter;
 import br.com.springboot.restspringboot.exception.UnsupportedMathOperationException;
