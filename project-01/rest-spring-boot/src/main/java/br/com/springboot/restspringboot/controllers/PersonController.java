@@ -1,6 +1,5 @@
 package br.com.springboot.restspringboot.controllers;
 
-import br.com.springboot.restspringboot.exception.UnsupportedMathOperationException;
 import br.com.springboot.restspringboot.model.Person;
 import br.com.springboot.restspringboot.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/person")
@@ -51,7 +49,7 @@ public class PersonController {
     @RequestMapping(value = "/{id}",
             method = RequestMethod.DELETE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public void delete(@PathVariable(value = "id") String id) {
+    public void delete(@PathVariable(value = "id") Long id) {
             service.deleteById(id);
     }
 
