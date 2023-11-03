@@ -1,6 +1,8 @@
 package br.com.springboot.restspringboot.services;
 
+import br.com.springboot.restspringboot.data.vo.v1.PersonVO;
 import br.com.springboot.restspringboot.exception.ResourceNotFoundException;
+import br.com.springboot.restspringboot.mapper.DozerMapper;
 import br.com.springboot.restspringboot.model.Person;
 import br.com.springboot.restspringboot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,31 +18,28 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
 
-    public List<Person> findAll() {
+    public List<PersonVO> findAll() {
         logger.info("Finding all people");
-        return repository.findAll();
+        return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
     }
 
-    public Person findById(Long id) {
+    public PersonVO findById(Long id) {
 
         logger.info("Finding person");
-//        Person person = new Person();
-//        person.setId(counter.incrementAndGet());
-//        person.setFirstName("Tuany");
-//        person.setLastName("Brito");
-//        person.setAddress("São Paulo");
-//        person.setGender("feminine");
-        return repository.findById(id)
+        var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
+        return DozerMapper.parseObject(entity, PersonVO.class);
     }
 
-    public Person create(Person person) {
+    public PersonVO create(PersonVO person) {
         logger.info("Creating one person");
-        return repository.save(person);
+        var entity = DozerMapper.parseObject(person, Person.class);
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
-    public Person update(Person person) {
+    public PersonVO update(PersonVO person) {
         logger.info("Update one person");
-        Person entity =  repository.findById(person.getId())
+        var entity =  repository.findById(person.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
 
         entity.setFirstName(person.getFirstName());
@@ -48,7 +47,8 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        return repository.save(entity);
+        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        return vo;
     }
 
     public void deleteById(Long id) {
