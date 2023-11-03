@@ -1,26 +1,17 @@
-package br.com.springboot.restspringboot.model;
-
-import jakarta.persistence.*;
-
+package br.com.springboot.restspringboot.data.vo.v1;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "person")
-public class Person implements Serializable {
+
+public class PersonVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "first_name", nullable = false, length = 80)
     private String firstName;
-    @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
-    @Column(nullable = false, length = 100)
     private String address;
-    @Column(nullable = false, length = 6)
     private String gender;
-    public Person() {};
+
+
     public String getFirstName() {
         return firstName;
     }
@@ -64,13 +55,13 @@ public class Person implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Person person)) return false;
+        if (!(o instanceof PersonVO personVO)) return false;
 
-        if (!id.equals(person.id)) return false;
-        if (!firstName.equals(person.firstName)) return false;
-        if (!getLastName().equals(person.getLastName())) return false;
-        if (!getAddress().equals(person.getAddress())) return false;
-        return getGender().equals(person.getGender());
+        if (!id.equals(personVO.id)) return false;
+        if (!firstName.equals(personVO.firstName)) return false;
+        if (!getLastName().equals(personVO.getLastName())) return false;
+        if (!getAddress().equals(personVO.getAddress())) return false;
+        return getGender().equals(personVO.getGender());
     }
 
     @Override
