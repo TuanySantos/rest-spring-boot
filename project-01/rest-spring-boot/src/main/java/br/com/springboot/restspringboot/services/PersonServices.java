@@ -1,9 +1,10 @@
 package br.com.springboot.restspringboot.services;
 
 import br.com.springboot.restspringboot.data.vo.v1.PersonVO;
+import br.com.springboot.restspringboot.data.vo.v2.PersonVOV2;
 import br.com.springboot.restspringboot.exception.ResourceNotFoundException;
 import br.com.springboot.restspringboot.mapper.PersonMapper;
-import br.com.springboot.restspringboot.model.Person;
+import br.com.springboot.restspringboot.mapper.PersonMapperV2;
 import br.com.springboot.restspringboot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class PersonServices {
 
     @Autowired
     PersonMapper personMapper;
+
+    @Autowired
+    PersonMapperV2 personMapperV2;
 
     public List<PersonVO> findAll() {
         logger.info("Finding all people");
@@ -40,6 +44,13 @@ public class PersonServices {
         var vo = personMapper.personToPersonVo(repository.save(entity));
         return vo;
     }
+    public PersonVOV2 createV2(PersonVOV2 person) {
+        logger.info("Creating one person v2");
+        var entity = personMapperV2.personVoV2ToPerson(person);
+        var vo = personMapperV2.personToPersonVoV2(repository.save(entity));
+        return vo;
+    }
+
     public PersonVO update(PersonVO person) {
         logger.info("Update one person");
         var entity =  repository.findById(person.getId())
