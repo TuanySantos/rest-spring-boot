@@ -2,7 +2,7 @@ package br.com.springboot.restspringboot.services;
 
 import br.com.springboot.restspringboot.data.vo.v1.PersonVO;
 import br.com.springboot.restspringboot.exception.ResourceNotFoundException;
-import br.com.springboot.restspringboot.mapper.DozerMapper;
+import br.com.springboot.restspringboot.mapper.PersonMapper;
 import br.com.springboot.restspringboot.model.Person;
 import br.com.springboot.restspringboot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +18,12 @@ public class PersonServices {
     @Autowired
     PersonRepository repository;
 
+    @Autowired
+    PersonMapper personMapper;
+
     public List<PersonVO> findAll() {
         logger.info("Finding all people");
-        return DozerMapper.parseListObjects(repository.findAll(), PersonVO.class);
+        return personMapper.personToPersonVoList(repository.findAll());
     }
 
     public PersonVO findById(Long id) {
@@ -28,13 +31,13 @@ public class PersonServices {
         logger.info("Finding person");
         var entity = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No records found for this id"));
-        return DozerMapper.parseObject(entity, PersonVO.class);
+        return personMapper.personToPersonVo(entity);
     }
 
     public PersonVO create(PersonVO person) {
         logger.info("Creating one person");
-        var entity = DozerMapper.parseObject(person, Person.class);
-        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        var entity = personMapper.personVoToPerson(person);
+        var vo = personMapper.personToPersonVo(repository.save(entity));
         return vo;
     }
     public PersonVO update(PersonVO person) {
@@ -47,7 +50,7 @@ public class PersonServices {
         entity.setAddress(person.getAddress());
         entity.setGender(person.getGender());
 
-        var vo = DozerMapper.parseObject(repository.save(entity), PersonVO.class);
+        var vo = personMapper.personToPersonVo(repository.save(entity));
         return vo;
     }
 
