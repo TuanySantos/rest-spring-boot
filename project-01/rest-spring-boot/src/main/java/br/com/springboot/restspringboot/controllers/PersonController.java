@@ -1,11 +1,11 @@
 package br.com.springboot.restspringboot.controllers;
 
 import br.com.springboot.restspringboot.data.vo.v1.PersonVO;
-import br.com.springboot.restspringboot.data.vo.v2.PersonVOV2;
 import br.com.springboot.restspringboot.services.PersonServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +18,7 @@ public class PersonController {
     private PersonServices service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(timeout = 1)
     public List<PersonVO> findAll() {
         return service.findAll();
     }
@@ -32,12 +33,6 @@ public class PersonController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public PersonVO create(@RequestBody PersonVO person) {
         return service.create(person);
-    }
-
-    @PostMapping(value = "/v2", consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public PersonVOV2 createV2(@RequestBody PersonVOV2 person) {
-        return service.createV2(person);
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
