@@ -18,7 +18,7 @@ public class PersonController {
     private PersonServices service;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional(timeout = 1)
+//    @Transactional(timeout = 1)
     public List<PersonVO> findAll() {
         return service.findAll();
     }
